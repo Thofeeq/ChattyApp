@@ -14,54 +14,72 @@ let appData = {
   messages: []
 }
 
-//Helper function to generate Random keys
-
+function isEmpty(obj) {
+  for(var key in obj) {
+      if(obj.hasOwnProperty(key))
+          return false;
+  }
+  return true;
+}
 
 class App extends Component {
   
   constructor(props){
     super(props);
     this.state = {messages: appData.messages,username: appData.currentUser.name}
-    this.recieveMessagesFromServer = this.recieveMessagesFromServer.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.sendMessagetoServer = this.sendMessagetoServer.bind(this);
+    // this.getMessageFromTextBox = this.getMessageFromTextBox.bind(this);
+    // this.getMessageFromServer = this.getMessageFromServer.bind(this); 
+    this.messageFromServer = 0;
+    this.socket =  new WebSocket("ws://0.0.0.0:3001");
   }
+  
+  componentDidMount() {
 
-
+    console.log("componentDidMount <App />");
+    //Listening for data
+    this.socket.onmessage =  (event)=>{
+      console.log("WE recv");
+    const incomingData = (JSON.parse(event.data));
+    let newMessageState = this.state.messages.concat(incomingData);
+    this.setState({messages:newMessageState});
+    
+      } 
+    }
   changeUsername(username){
     this.setState ({username:username});
   }
 
   sendMessagetoServer(messageObject){
     this.socket.send(JSON.stringify(messageObject));
-  }
-
-  recieveMessagesFromServer(){
-    this.socket.onmessage = function (event){
-      let messageFromServer = JSON.parse(event.data);
-      const newMessage = messageFromServer;
-      const newMessages = this.state.messages.concat(newMessage);
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      console.log(newMessages.length);
-      this.setState({messages: newMessages})
-    }
-  }
-  componentDidMount() {
-    console.log("componentDidMount <App />");
-    this.socket =  new WebSocket("ws://0.0.0.0:3001");
    
-    }
+  }
+  // getMessageFromTextBox(messageString,username){
+  //   const newMessage = {id: this.state.messages.length+1, username:username, content: messageString};
+  //   const newMessages = this.state.messages.concat(newMessage);
+  //   // Update the state of the app component.
+  //   // Calling setState will trigger a call to render() in App and all child components.
+  //   this.setState({messages: newMessages})
+  //  }
+
+  //  getMessageFromServer(newMessage){
+  //   const newMessages = this.state.messages.concat(newMessage);
+  //   // Update the state of the app component.
+  //   // Calling setState will trigger a call to render() in App and all child components.
+  //   this.setState({messages: newMessages})
+  //  }
+
+
+
     
-  
-  
   render() {
     console.log("Rendering App");
     return (
       <div>
       <Navbar/>
       <MessageList messages = {this.state.messages}/>
-      <ChatBar sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} recieveMessagesFromServer = {this.recieveMessagesFromServer}/>
+      <ChatBar  sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} recieveMessagesFromServer = {this.recieveMessagesFromServer}/>
       </div>
 
     );

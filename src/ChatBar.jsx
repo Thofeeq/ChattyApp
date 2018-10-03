@@ -7,8 +7,10 @@ export default class ChatBar extends Component {
   }
   handleKeyPress = (event) => {
     if(event.key == 'Enter'){
+      
       this.props.sendMessagetoServer({content:event.target.value,username:this.props.username,type:"incomingMessage"});
-      this.props.recieveMessagesFromServer();
+     
+
     }
   }
 

@@ -4,8 +4,8 @@ import Message from './Message.jsx';
 export default class MessageList extends Component {
   
 
-
 render(){
+ 
     /* Takes the message array from appData object, and maps it to a Message componenet and passes respective value required to create Message Component*/
 
 
