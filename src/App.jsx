@@ -22,19 +22,11 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {messages: appData.messages,username: appData.currentUser.name}
-    this.getMessageFromTextBox = this.getMessageFromTextBox.bind(this);
+    this.recieveMessagesFromServer = this.recieveMessagesFromServer.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
     this.sendMessagetoServer = this.sendMessagetoServer.bind(this);
   }
-   getMessageFromTextBox(messageString,username){
-    
-    const newMessage = {id: this.state.messages.length+1, username:username, content: messageString};
-    const newMessages = this.state.messages.concat(newMessage);
-    // Update the state of the app component.
-    // Calling setState will trigger a call to render() in App and all child components.
-    this.setState({messages: newMessages})
 
-  }
 
   changeUsername(username){
     this.setState ({username:username});
@@ -42,9 +34,19 @@ class App extends Component {
 
   sendMessagetoServer(messageObject){
     this.socket.send(JSON.stringify(messageObject));
-
   }
 
+  recieveMessagesFromServer(){
+    this.socket.onmessage = function (event){
+      let messageFromServer = JSON.parse(event.data);
+      const newMessage = messageFromServer;
+      const newMessages = this.state.messages.concat(newMessage);
+      // Update the state of the app component.
+      // Calling setState will trigger a call to render() in App and all child components.
+      console.log(newMessages.length);
+      this.setState({messages: newMessages})
+    }
+  }
   componentDidMount() {
     console.log("componentDidMount <App />");
     this.socket =  new WebSocket("ws://0.0.0.0:3001");
@@ -59,7 +61,7 @@ class App extends Component {
       <div>
       <Navbar/>
       <MessageList messages = {this.state.messages}/>
-      <ChatBar sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} getMessageFromTextBox = {this.getMessageFromTextBox}/>
+      <ChatBar sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} recieveMessagesFromServer = {this.recieveMessagesFromServer}/>
       </div>
 
     );
