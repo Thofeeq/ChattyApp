@@ -36,12 +36,13 @@ let appData = {
 
 
 class App extends Component {
-
+  
   constructor(props){
     super(props);
     this.state = {messages: appData.messages,username: appData.currentUser.name}
     this.getMessageFromTextBox = this.getMessageFromTextBox.bind(this);
     this.changeUsername = this.changeUsername.bind(this);
+    
   }
    getMessageFromTextBox(messageString,username){
     
@@ -50,6 +51,7 @@ class App extends Component {
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
     this.setState({messages: newMessages})
+
   }
 
   changeUsername(username){
@@ -58,8 +60,10 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-    var exampleSocket = new WebSocket("http://0.0.0.0:3000/");
-
+    this.socket =  new WebSocket("ws://0.0.0.0:3001");
+    this.socket.onopen = function(){
+      console.log("WE OPEN");
+    }
   }
   
   render() {
