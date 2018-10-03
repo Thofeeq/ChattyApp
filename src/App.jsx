@@ -58,7 +58,7 @@ class App extends Component {
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-
+    var exampleSocket = new WebSocket("http://0.0.0.0:3000/");
 
   }
   
