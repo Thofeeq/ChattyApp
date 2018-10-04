@@ -1,14 +1,7 @@
 import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx'
-function Navbar(props){
-  console.dir(props);
-
-  return (<nav className="navbar">
-  <a href="/" className="navbar-brand">Chatty</a>
-  <span> {props.currentUserTotal} Online</span>
-</nav>)
-}
+import Navbar from  './Navbar.jsx'
 
 //Object that holds all the data for the app
 let appData = {
