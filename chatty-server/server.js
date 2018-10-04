@@ -18,7 +18,8 @@ const wss = new WebSocket({ server });
 wss.broadcast = function broadcast(data) {
 
   wss.clients.forEach(function each(client) {
-//Question for mentor(check the if statement in ws doc)
+//Question for mentor(check the if statement in ws doc)(WHY did we need the if check? and why did it fail?)
+    console.log("WE BROAD: " + JSON.stringify(data))
       client.send(JSON.stringify(data));
   });
 };
@@ -27,12 +28,31 @@ wss.broadcast = function broadcast(data) {
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
+
+
+  totalCurrentOnlineUsers = {type:"currentUserTotal", total:  wss.clients.size};
+
+
+    wss.broadcast(totalCurrentOnlineUsers);
+ 
+  
   ws.on('message', function(message) {
 
     incomingMessage = JSON.parse(message);
     console.log(incomingMessage.username + " said " + incomingMessage.content);
+    if(incomingMessage.type === "postMessage"){
+      incomingMessage.type = "incomingMessage";
+    }
+    else if(incomingMessage.type === "postNotification"){
+      incomingMessage.type = "incomingNotification";
+    }
+    else{
+      console.log("Invalid message type");
+    }
+    
     incomingMessage["id"] = uuid();
      wss.broadcast(incomingMessage);
+     
 
  });
   // ws.onmessage = function (event) {
@@ -45,7 +65,9 @@ wss.on('connection', (ws) => {
   // }
 
   
-  
+
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {console.log("Disconnected");
+  totalCurrentOnlineUsers = {type:"currentUserTotal", total:  wss.clients.size};
+  wss.broadcast(totalCurrentOnlineUsers);});
 });

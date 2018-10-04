@@ -1,36 +1,29 @@
 import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
-import Message from './Message.jsx';
 import ChatBar from './ChatBar.jsx'
-function Navbar(){
+function Navbar(props){
+  console.dir(props);
 
   return (<nav className="navbar">
   <a href="/" className="navbar-brand">Chatty</a>
+  <span> {props.currentUserTotal} Online</span>
 </nav>)
 }
 
 let appData = {
-  currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+  currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
   messages: []
 }
 
-function isEmpty(obj) {
-  for(var key in obj) {
-      if(obj.hasOwnProperty(key))
-          return false;
-  }
-  return true;
-}
 
 class App extends Component {
   
-  constructor(props){
+  constructor(props){ //Question for mentor(Why pass in props? Why call super? Why bind? )
     super(props);
-    this.state = {messages: appData.messages,username: appData.currentUser.name}
+    this.state = {messages: appData.messages,username: appData.currentUser.name, currentUserTotal: 0}
     this.changeUsername = this.changeUsername.bind(this);
     this.sendMessagetoServer = this.sendMessagetoServer.bind(this);
-    // this.getMessageFromTextBox = this.getMessageFromTextBox.bind(this);
-    // this.getMessageFromServer = this.getMessageFromServer.bind(this); 
+    this.sendNotificationToServer = this.sendMessagetoServer.bind(this);
     this.messageFromServer = 0;
     this.socket =  new WebSocket("ws://0.0.0.0:3001");
   }
@@ -39,11 +32,30 @@ class App extends Component {
 
     console.log("componentDidMount <App />");
     //Listening for data
-    this.socket.onmessage =  (event)=>{
+    this.socket.onmessage =  (event)=>{ //QUESTION FOR MENTOR (Why cant i use the regular function expression?)
       console.log("WE recv");
     const incomingData = (JSON.parse(event.data));
-    let newMessageState = this.state.messages.concat(incomingData);
-    this.setState({messages:newMessageState});
+    let newMessageState;
+    switch(incomingData.type) { //QUESTION - why use switch - it works the same
+      case "incomingMessage":
+        // handle incoming message
+        newMessageState = this.state.messages.concat(incomingData);
+        this.setState({messages:newMessageState});
+        break;
+      case "incomingNotification":
+        // handle incoming notification
+        newMessageState = this.state.messages.concat(incomingData);
+        this.setState({messages:newMessageState});        
+        break;
+      case "currentUserTotal":
+      this.setState({currentUserTotal:incomingData.total});
+      break;
+      default:
+        // show an error in the console if the message type is unknown
+        throw new Error("Unknown event type " + newMessageState.type);
+    }
+    
+   
     
       } 
     }
@@ -55,33 +67,20 @@ class App extends Component {
     this.socket.send(JSON.stringify(messageObject));
    
   }
-  // getMessageFromTextBox(messageString,username){
-  //   const newMessage = {id: this.state.messages.length+1, username:username, content: messageString};
-  //   const newMessages = this.state.messages.concat(newMessage);
-  //   // Update the state of the app component.
-  //   // Calling setState will trigger a call to render() in App and all child components.
-  //   this.setState({messages: newMessages})
-  //  }
 
-  //  getMessageFromServer(newMessage){
-  //   const newMessages = this.state.messages.concat(newMessage);
-  //   // Update the state of the app component.
-  //   // Calling setState will trigger a call to render() in App and all child components.
-  //   this.setState({messages: newMessages})
-  //  }
+  sendNotificationToServer(notificationObject){
+  this.socket.send(JSON.stringify(notificationObject));
+  }
 
 
-
-    
   render() {
     console.log("Rendering App");
     return (
       <div>
-      <Navbar/>
+      <Navbar currentUserTotal = {this.state.currentUserTotal}/>
       <MessageList messages = {this.state.messages}/>
-      <ChatBar  sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} recieveMessagesFromServer = {this.recieveMessagesFromServer}/>
+      <ChatBar  sendNotificationToServer = {this.sendNotificationToServer} sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} />
       </div>
-
     );
   }
 }
