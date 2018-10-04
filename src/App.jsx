@@ -17,11 +17,13 @@ class App extends Component {
   constructor(){ 
     super();
     //Setting up the state for current sent messages, current user, and number of users online
-    this.state = {messages: appData.messages,username: appData.currentUser.name, currentUserTotal: 0}
+    this.state = {messages: appData.messages,username: appData.currentUser.name, currentUserTotal: 0};
     this.changeUsername = this.changeUsername.bind(this);
     this.sendMessagetoServer = this.sendMessagetoServer.bind(this);
     this.sendNotificationToServer = this.sendMessagetoServer.bind(this); 
+    // this.scrollToBottom = this.scrollToBottom.bind(this);
     this.messageFromServer = 0;
+    
     //Setting up the socket 
     this.socket =  new WebSocket("ws://0.0.0.0:3001");
   }
@@ -57,6 +59,7 @@ class App extends Component {
       }
     } 
   }
+
   //Method responsible for changing the state of username
   changeUsername(username){
     this.setState ({username:username});
@@ -65,7 +68,7 @@ class App extends Component {
   //Given a message object of type message, turns it into a string and sends it to the server
   sendMessagetoServer(messageObject){
     this.socket.send(JSON.stringify(messageObject));
-   
+    // this.scrollToBottom();
   }
 
   //Given a message object of type notification, turns it into a string and sends it to the server
@@ -73,13 +76,16 @@ class App extends Component {
   this.socket.send(JSON.stringify(notificationObject));
   }
 
+  //Helper method for autoscrolling [SO]
+
+  
   //Rendering the main App component which consist of 3 other components [Navbar, MessageList and Chatbar]
   render() {
     console.log("Rendering App");
     return (
       <div>
       <Navbar currentUserTotal = {this.state.currentUserTotal}/>
-      <MessageList messages = {this.state.messages}/>
+      <MessageList messages = {this.state.messages} />
       <ChatBar  sendNotificationToServer = {this.sendNotificationToServer} sendMessagetoServer = {this.sendMessagetoServer} changeUsername = {this.changeUsername} username = {this.state.username} />
       </div>
     );
