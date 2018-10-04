@@ -43,10 +43,10 @@ wss.on('connection', (ws) => {
   ws.on('message', function(message) {
 
     incomingMessage = JSON.parse(message);
-    console.log(incomingMessage.username + " said " + incomingMessage.content);
+
     if(incomingMessage.type === "postMessage"){
       incomingMessage.type = "incomingMessage";
-      incomingMessage["userColor"] =userNameColor[randomColor];
+      incomingMessage["userColor"] = userNameColor[randomColor]; //QUESTI(ON FOR MENTOR (This is working: should i store client specific data still?)
     }
     else if(incomingMessage.type === "postNotification"){
       incomingMessage.type = "incomingNotification";

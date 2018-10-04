@@ -41,6 +41,11 @@ body {
 .message {
   display: flex;
   padding: 5px;
+  justify-content: flex-start;
+  img {
+    display:flex;
+    max-width:60%;
+    }
 }
 
 .message.system {
@@ -50,13 +55,15 @@ body {
 
 .message-content,
 .message-username {
-  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
   margin: 5px;
   padding: 0 10px;
 }
 
 .message-content {
   flex: 8;
+
 }
 
 .message-username {
