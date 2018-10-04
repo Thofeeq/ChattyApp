@@ -32,7 +32,7 @@ function getRandomNumber(max) {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   // color array for username
-  let userNameColor = ["red","blue","green","purple"];
+  let userNameColor = ["red","blue","green","purple","Fuchsia","navy","gray"];
   let randomColor = getRandomNumber(userNameColor.length);
 
   //get total clients currently connected and wrap it in an object

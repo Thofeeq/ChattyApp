@@ -29,14 +29,14 @@ export default class Message extends Component {
         return (
           <div className="message">
             <span className="message-username" style={{color:this.props.userColor}}>{this.props.username}</span>
-            <span  className="message-content" > <img src={this.props.content}/> </span>
+            <div className="message-content img-span" style={{borderColor:this.props.userColor}}> <img src={this.props.content}/> </div>
           </div>
         );
       } else {
         return (
           <div className="message">
             <span className="message-username" style={{color:this.props.userColor}}>{this.props.username}</span>
-            <span className="message-content">{this.props.content}</span>
+            <span className="message-content" style={{borderColor:this.props.userColor}}>{this.props.content}</span>
           </div>
         );
       }

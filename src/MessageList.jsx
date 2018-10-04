@@ -4,9 +4,11 @@ import Message from './Message.jsx';
 //This component is responsible for handling the rendering of all the messages
 export default class MessageList extends Component {
 
+  //Helper method that autoscroll so recent messages can be seen without user having to scroll
  scrollToBottom (ref){
   ref.scrollIntoView();
 }
+  //Calls the ScrollToBottom helper method upon any update (Sending a message)
   componentDidUpdate(){
     this.scrollToBottom(this.refs.dummyDiv);
   }

@@ -68,7 +68,6 @@ class App extends Component {
   //Given a message object of type message, turns it into a string and sends it to the server
   sendMessagetoServer(messageObject){
     this.socket.send(JSON.stringify(messageObject));
-    // this.scrollToBottom();
   }
 
   //Given a message object of type notification, turns it into a string and sends it to the server
@@ -77,8 +76,7 @@ class App extends Component {
   }
 
   //Helper method for autoscrolling [SO]
-
-  
+ 
   //Rendering the main App component which consist of 3 other components [Navbar, MessageList and Chatbar]
   render() {
     console.log("Rendering App");

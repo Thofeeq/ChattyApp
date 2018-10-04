@@ -42,11 +42,6 @@ body {
   display: flex;
   padding: 5px;
   justify-content: flex-start; 
-  img {
-    display:flex;
-    max-width:60%;
-    height:auto;
-    }
 }
 
 .message.system {
@@ -71,12 +66,19 @@ body {
 }
 
 .message-content {
-  flex: 8;
-  flex-grow: 1;
-  flex-shrink:auto;
-  flex-basis: auto;
-  max-width:auto;
-  background-color:rgb(65, 123, 216)
+  display: inline-flex;
+  background-color:white;
+  color:black;
+  border: 3px solid;
+  max-width: 100%;
+
+}
+
+.img-span{
+  max-width: 60%;
+  img{
+    max-width: 100%;
+  }
 }
 
 .message-username {
@@ -85,6 +87,7 @@ body {
   background-color: white;
   max-width:20%;
   max-height:16px;
+  border:3px solid;
 }
 
 .navbar {
