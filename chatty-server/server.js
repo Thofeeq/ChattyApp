@@ -26,10 +26,14 @@ wss.broadcast = function broadcast(data) {
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
-
+  let userNameColor = ["red","blue","green","purple"];
+  let randomColor = getRandomNumber(userNameColor.length);
   totalCurrentOnlineUsers = {type:"currentUserTotal", total:  wss.clients.size};
 
 
@@ -42,6 +46,7 @@ wss.on('connection', (ws) => {
     console.log(incomingMessage.username + " said " + incomingMessage.content);
     if(incomingMessage.type === "postMessage"){
       incomingMessage.type = "incomingMessage";
+      incomingMessage["userColor"] =userNameColor[randomColor];
     }
     else if(incomingMessage.type === "postNotification"){
       incomingMessage.type = "incomingNotification";
