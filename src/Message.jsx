@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
 
 
-// function Message({username,content}){
-//   return (
-//     <div className="message">
-//       <span className="message-username">{this.props.username}</span>
-//       <span className="message-content">{this.props.content}</span>
-//     </div>
 
-//   );
-// }
-
+//Helper function to check if given URL contains an image extension
 function isItAnImageURL(url){
   let isValid = false;
   let extensionIndex = 0;
@@ -25,11 +17,14 @@ function isItAnImageURL(url){
   return isValid;
 }
 
+//Component responsible for rendering the invidiual sent message
 export default class Message extends Component {
-
+  //Render the message component
   render(){
     console.log("Rendering Message");
+    //Check the type of message[Message or notification] being rendered, and return appropriate JSX 
     if(this.props.type==="incomingMessage"){
+      //IF the message contains an image, return the appropriate JSX
       if(isItAnImageURL(this.props.content)){
         return (
           <div className="message">
@@ -45,15 +40,17 @@ export default class Message extends Component {
           </div>
         );
       }
-
     }
+    
     else if(this.props.type==="incomingNotification"){
-      return   <div className="notification">
-      <span className="notification-content">{this.props.content}</span>
-    </div>;
+      return  <div className="message system">
+                <div className="notification">
+                  <span className="notification-content" style={{color:this.props.userColor}}><i className="fas fa-exclamation-triangle"style={{padding:"5px"}}></i>{this.props.content}</span>
+                </div>
+              </div>;
     }
     else {
-      console.log("INVALID");
+      console.log("Error: Invalid Message type");
       return null;
     }
     

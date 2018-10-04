@@ -15,64 +15,60 @@ const server = express()
 // Create the WebSockets server
 const wss = new WebSocket({ server });
 
+//handles the broadcast event [given a data, send it to each client connected as string data]
 wss.broadcast = function broadcast(data) {
-
   wss.clients.forEach(function each(client) {
-//Question for mentor(check the if statement in ws doc)(WHY did we need the if check? and why did it fail?)
-    console.log("WE BROAD: " + JSON.stringify(data))
-      client.send(JSON.stringify(data));
+    client.send(JSON.stringify(data));
   });
 };
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
+//Random num generator [To pick color for username - MDN]
 function getRandomNumber(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
+// Set up a callback that will run when a client connects to the server
+// When a client connects they are assigned a socket, represented by
+// the ws parameter in the callback.
 wss.on('connection', (ws) => {
   console.log('Client connected');
-
+  // color array for username
   let userNameColor = ["red","blue","green","purple"];
   let randomColor = getRandomNumber(userNameColor.length);
+
+  //get total clients currently connected and wrap it in an object
   totalCurrentOnlineUsers = {type:"currentUserTotal", total:  wss.clients.size};
-
-
-    wss.broadcast(totalCurrentOnlineUsers);
+  // As long as there's a connection, always broadcast the total current online users
+  wss.broadcast(totalCurrentOnlineUsers);
  
-  
+  //Handle incoming data/message to the server
   ws.on('message', function(message) {
-
+    //Parse the data into an object so it can be modified with ease
     incomingMessage = JSON.parse(message);
 
+    //Checking for the incoming data type [Whether its a message or a notification]
     if(incomingMessage.type === "postMessage"){
+    //Modifying the recieved data/object  1. Changing the type to "incomingMessage" and 2. setting a random Color for the user by inserting new key("userColor") into the object
       incomingMessage.type = "incomingMessage";
-      incomingMessage["userColor"] = userNameColor[randomColor]; //QUESTI(ON FOR MENTOR (This is working: should i store client specific data still?)
+      incomingMessage["userColor"] = userNameColor[randomColor]; 
     }
+    //Modifying the type to "incomingNotification"
     else if(incomingMessage.type === "postNotification"){
       incomingMessage.type = "incomingNotification";
     }
     else{
       console.log("Invalid message type");
     }
-    
+    //Setting an UUID for each mesage
     incomingMessage["id"] = uuid();
+    //Broadcast the modified message/notification object back to the clients
      wss.broadcast(incomingMessage);
-     
-
  });
-  // ws.onmessage = function (event) {
-  //  incomingMessage = JSON.parse(event.data);
-  //  console.log(incomingMessage.username + " said " + incomingMessage.content);
-  //  incomingMessage["id"] = uuid();
-  
-  //  ws.send(JSON.stringify(incomingMessage));
-  //   wss.broadcast(JSON.stringify(incomingMessage));
-  // }
 
   
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {console.log("Disconnected");
+  // updating the current number of clients connected upon closing the socket, so that it can be broadcasted/updated on the app accordingly. 
   totalCurrentOnlineUsers = {type:"currentUserTotal", total:  wss.clients.size};
   wss.broadcast(totalCurrentOnlineUsers);});
 });
