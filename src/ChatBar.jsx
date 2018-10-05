@@ -2,8 +2,12 @@ import React, {Component} from 'react';
 
 /*Component responsible for rendering the Chat textbox/input and the username textbox/input along with calling methods to send 
  messages/notification to server as needed */
- 
+
 export default class ChatBar extends Component {
+
+  handleEmojiClick = (code,emoji) => {
+    
+  }
 
   //Event handler for sending message from the textbot upon pressing 'Enter' key
   sendMessageEvent = (event) => {
