@@ -1,18 +1,18 @@
-#Web Talky
+# Web Talky
 ---
 
-##Wab Talky is a SPA(Single Page App) used for chatting.
+## Wab Talky is a SPA(Single Page App) used for chatting.
 
-##Screenshots
+## Screenshots
 ---
 !["Web Talky"]("url")
 !["Web Talky]("url")
 
-##Setup
+## Setup
 ---
-*clone the repo and run `npm instal` to install all the required dependencies
+* clone the repo and run `npm instal` to install all the required dependencies
 
-##Dependencies
+## Dependencies
 ---
 * babel-core - 6.23.1 or Above
 * babel-loader - 6.3.1 or Above
