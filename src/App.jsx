@@ -30,8 +30,6 @@ class App extends Component {
   
   //All the updates once the page is loaded goes here
   componentDidMount() {
-
-    console.log("componentDidMount <App />");
     //Listening for data
     this.socket.onmessage =  (event)=>{ 
       //Parsing the incoming data into an Object that we can use/modify  
@@ -79,7 +77,6 @@ class App extends Component {
  
   //Rendering the main App component which consist of 3 other components [Navbar, MessageList and Chatbar]
   render() {
-    console.log("Rendering App");
     return (
       <div>
       <Navbar currentUserTotal = {this.state.currentUserTotal}/>

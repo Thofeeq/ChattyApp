@@ -21,7 +21,6 @@ function isItAnImageURL(url){
 export default class Message extends Component {
   //Render the message component
   render(){
-    console.log("Rendering Message");
     //Check the type of message[Message or notification] being rendered, and return appropriate JSX 
     if(this.props.type==="incomingMessage"){
       //IF the message contains an image, return the appropriate JSX

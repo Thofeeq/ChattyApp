@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 export default class ChatBar extends Component {
 
   handleEmojiClick = (code,emoji) => {
-    
+
   }
 
   //Event handler for sending message from the textbot upon pressing 'Enter' key
@@ -36,7 +36,6 @@ export default class ChatBar extends Component {
 
   //Renders the ChatBar component
   render(){
-    console.log("Rendering ChatBar");
     //Returning the JSX with event handlers attached to the elements
     return (<footer className="chatbar">
     <input  onKeyPress={this.usernameChangeEvent} className="chatbar-username" placeholder="Your Name (Optional)" />

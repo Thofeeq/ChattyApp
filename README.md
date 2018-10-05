@@ -11,6 +11,9 @@
 ## Setup
 ---
 * clone the repo and run `npm instal` to install all the required dependencies
+* inside the chatty-server folder (located inside the main(ChattyApp) folder), run `npm install` to install all the required dependencies for the server
+* Inside the chatty-server folder, run `node server.js` to start the server (tip:use split terminal if possible)
+* Navigate to the main folder(ChattyApp) and start the app by running `npm start`
 
 ## Dependencies
 ---
