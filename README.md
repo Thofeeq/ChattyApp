@@ -5,11 +5,11 @@
 
 ## Screenshots
 ---
-!["Web Talky"]("https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image1.png?raw=true")
-!["Web Talky]("https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image2.png")
-!["Web Talky"]("https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image3.png")
-!["Web Talky - Can even send pictures!"]("https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image4.png")
-!["Web Talky"]("https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image5.png")
+![Web Talky](https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image1.png)
+![Web Talky](https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image2.png)
+![Web Talky](https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image3.png)
+![Web Talky - Can even send pictures!](https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image4.png)
+![Web Talky](https://github.com/Thofeeq/ChattyApp/blob/master/screenshots/image5.png)
 
 ## Setup
 ---
